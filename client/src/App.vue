@@ -1,25 +1,20 @@
 
 <template>
-  <br />
+  <!-- <br />
   Display Name: {{ name }}
   <br />
   Your ID: {{ socketId }}
   <div>
     <input type="text" v-model="editName" placeholder="Display name..." />
     <button @click="saveDisplayName">Save name</button>
-  </div>
-  </br>
-  </br>
-  </br>
-  <div>
-    <button @click="onTestApiClick">Test API</button>
-  </div>
+  </div> -->
+  <MainDesk />
 </template>
 
 <script setup>
-import { testApi } from './api/test';
 import { io } from 'socket.io-client';
 import { computed, ref, watch } from 'vue';
+import MainDesk from './components/MainDesk.vue';
 
 const displayName = ref(localStorage.getItem('displayName') || '');
 const editName = ref(displayName.value);
@@ -51,12 +46,5 @@ socket.on('connect_error', (error) => {
   console.error('Connection error:', error);
 });
 
-const onTestApiClick = () => {
-  testApi().then(data => {
-    console.log('API data:', data);
-  }).catch(error => {
-    console.error('API Error:', error);
-  });
-};
 </script>
 
