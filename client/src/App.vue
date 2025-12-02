@@ -6,13 +6,13 @@
   Your ID: {{ socketId }}
   <div>
     <input type="text" v-model="editName" placeholder="Display name..." />
-    <button @click="save">Save name</button>
+    <button @click="saveDisplayName">Save name</button>
   </div>
   </br>
   </br>
   </br>
   <div>
-    <button @click="onClick">Test API</button>
+    <button @click="onTestApiClick">Test API</button>
   </div>
 </template>
 
@@ -23,13 +23,12 @@ import { computed, ref, watch } from 'vue';
 
 const displayName = ref(localStorage.getItem('displayName') || '');
 const editName = ref(displayName.value);
-
-const save = () => {
+const saveDisplayName = () => {
   const trimmed = editName.value ? editName.value.trim() : '';
   displayName.value = trimmed;
   localStorage.setItem('displayName', displayName.value);
+  displayName.value = '';
 };
-
 const name = computed(() => {
   return displayName.value || 'Anonymous';
 });
@@ -43,18 +42,16 @@ const socketOptions = {
   transports: ['websocket', 'polling']
 };
 const socket = io(apiUrl, socketOptions);
-
 let socketId = ref(null);
 socket.on('connect', () => {
   console.log('Connected:', socket.id);
   socketId.value = socket.id;
 });
-
 socket.on('connect_error', (error) => {
   console.error('Connection error:', error);
 });
 
-const onClick = () => {
+const onTestApiClick = () => {
   testApi().then(data => {
     console.log('API data:', data);
   }).catch(error => {
