@@ -1,4 +1,16 @@
+# Dependencies
 node_modules
-/dist
-/.env
 
+# Editors
+.vscode
+
+# Configuration
+.env
+# .npmrc
+
+# Build Outputs
+.next/
+out/
+build
+dist
+dist/*
