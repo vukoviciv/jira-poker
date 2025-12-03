@@ -35,7 +35,7 @@ defineProps({
 
 const onAddPlayer = () => {
   testApi().then(data => {
-    console.log('API data:', data);
+    console.log('API data:', data.message);
   }).catch(error => {
     console.error('API Error:', error);
   });

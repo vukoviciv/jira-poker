@@ -15,10 +15,6 @@
         <div class="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg text-cyan-400">
           <span class="text-sm">{{ displayName }}</span>
         </div>
-        <div class="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg">
-          <span>👥</span>
-          <span class="text-sm">{{ players.length }} players</span>
-        </div>
         <button class="flex items-center gap-2 px-4 py-2 border border-cyan-500 text-cyan-400 rounded-lg hover:bg-cyan-500/10 transition">
           <span>📤</span>
           Invite
@@ -29,9 +25,10 @@
 </template>
 
 <script setup>
-defineProps({
-  players: { type: Array, required: true },
-  displayName: { type: String, default: "Ivana" }
-});
+import { ref } from 'vue';
+
+const displayName = ref(localStorage.getItem('displayName') || 'Anonymous');
+
+// TODO: use store for display name
 </script>
 
