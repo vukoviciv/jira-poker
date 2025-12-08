@@ -18,9 +18,7 @@
 </template>
 
 <script setup>
-import { testApi } from '../api/test';
-import { io } from 'socket.io-client';
-import { computed, ref, watch } from 'vue';
+import { ref } from 'vue';
 
 const displayName = ref(localStorage.getItem('displayName') || null);
 const editName = ref(displayName.value);

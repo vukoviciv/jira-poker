@@ -5,19 +5,19 @@
         <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
           <span class="text-lg">♠️</span>
         </div>
-        <div>
+        <div class="flex items-center">
           <h1 class="text-2xl font-bold">Poker Planning</h1>
-          <p class="text-xs text-slate-400">Estimate your stories</p>
+          <div class="gap-2 ml-2 px-4 py-2 bg-slate-700 rounded-lg text-cyan-400">
+            <span class="text-sm">{{ displayName }}</span>
+          </div>
         </div>
       </div>
-
       <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg text-cyan-400">
-          <span class="text-sm">{{ displayName }}</span>
-        </div>
         <button class="flex items-center gap-2 px-4 py-2 border border-cyan-500 text-cyan-400 rounded-lg hover:bg-cyan-500/10 transition">
-          <span>📤</span>
-          Invite
+          <span>📤</span>Invite
+        </button>
+        <button class="flex items-center gap-2 px-4 py-2 border border-cyan-500 text-cyan-400 rounded-lg hover:bg-cyan-500/10 transition">
+          Logout
         </button>
       </div>
     </div>

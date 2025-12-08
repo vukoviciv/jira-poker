@@ -6,7 +6,7 @@
 
 <script setup>
 import { io } from 'socket.io-client';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import MainLayout from './components/common/MainLayout.vue';
 
 const apiUrl = import.meta.env.VITE_API_URL;

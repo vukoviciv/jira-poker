@@ -1,10 +1,10 @@
 <template>
   <div class="room-page">
-    <h1>Room</h1>
-    <p>This is a placeholder for the game/room page.</p>
+    <main-desk />
   </div>
 </template>
 
 <script setup>
+import MainDesk from '../components/MainDesk.vue';
 // Add room-specific logic here
 </script>

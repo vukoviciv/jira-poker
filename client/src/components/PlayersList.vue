@@ -6,8 +6,7 @@
         <div
           v-for="player in players"
           :key="player.id"
-          class="flex items-center gap-3 p-3 bg-slate-700/40 hover:bg-slate-700/60 rounded-lg transition border border-slate-600"
-        >
+          class="flex items-center gap-3 p-3 bg-slate-700/40 hover:bg-slate-700/60 rounded-lg transition border border-slate-600">
           <div class="flex-1">
             <p class="font-medium text-sm">{{ player.name }}</p>
             <p class="text-xs text-slate-400">
