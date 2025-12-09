@@ -2,22 +2,20 @@ import { defineStore } from 'pinia';
 
 const useAuthStore = defineStore('auth', {
   state: () => ({
-    displayName: localStorage.getItem('displayName') || 'Anonymous',
+    displayName: localStorage.getItem('displayName') || null,
   }),
-  getters: {
-    userDisplayName(state) {
-      return state.displayName;
-    }
-  },
   actions: {
     setDisplayName(name) {
       const trimmed = name?.trim() || 'Anonymous';
       this.displayName = trimmed;
       localStorage.setItem('displayName', trimmed);
     },
+    login(displayName) {
+      this.setDisplayName(displayName);
+    },
     logout() {
       localStorage.removeItem('displayName');
-      this.displayName = 'Anonymous';
+      this.displayName = null;
     }
   },
 });
