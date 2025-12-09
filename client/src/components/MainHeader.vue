@@ -17,7 +17,7 @@
           <span>📤</span>Invite
         </button>
         <button
-          :onClick="store.logout"
+          @click="logout"
           class="flex items-center gap-2 px-4 py-2 cursor-pointer border border-cyan-500 text-cyan-400 rounded-lg hover:bg-cyan-500/10 transition">
           Logout
         </button>
@@ -29,8 +29,15 @@
 <script setup>
 import useAuthStore from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
 const store = useAuthStore();
 const { displayName } = storeToRefs(store);
+const router = useRouter();
+
+const logout = () => {
+  store.logout();
+  router.push({ name: 'Home' });
+};
 </script>
 
