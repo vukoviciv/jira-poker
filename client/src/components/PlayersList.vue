@@ -3,6 +3,9 @@
     <div class="space-y-4">
       <h2 class="text-lg font-semibold text-slate-300">Players</h2>
       <div class="space-y-3">
+        <button @click="onLoadPlayers" class="w-full mt-6 px-4 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition cursor-pointer">
+          Load Players
+        </button>
         <div
           v-for="player in players"
           :key="player.id"
@@ -19,24 +22,35 @@
         </div>
       </div>
       <button @click="onAddPlayer" class="w-full mt-6 px-4 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition cursor-pointer">
-        + Add Player
+        + Test Add Player
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { testApi } from '@/api/test';
+import { ref } from 'vue';
+import { create as createPlayer, getAll } from '@/api/player';
 
-defineProps({
-  players: { type: Array, required: true }
-});
+const players = ref([]);
 
 const onAddPlayer = () => {
-  testApi().then(data => {
-    console.log('API data:', data.message);
+  const params = {
+    name: 'Ivana',
+    socketId: Math.random().toString(36).substring(2, 15)
+  }
+  createPlayer(params).then(data => {
+    console.log('Added player:', data);
   }).catch(error => {
-    console.error('API Error:', error);
+    console.error(error);
+  });
+};
+
+const onLoadPlayers = () => {
+  getAll().then(data => {
+    players.value = data;
+  }).catch(error => {
+    console.error(error);
   });
 };
 </script>
