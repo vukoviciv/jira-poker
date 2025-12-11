@@ -21,26 +21,40 @@
           </div>
         </div>
       </div>
-      <button @click="onAddPlayer" class="w-full mt-6 px-4 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition cursor-pointer">
-        + Test Add Player
-      </button>
+      <form @submit.prevent="onAddPlayer">
+        <input
+          type="text"
+          ref="playerNameRef"
+          placeholder="Player name"
+          v-model="playerName"
+          class="w-full mt-4 px-4 py-2 border border-slate-600 rounded-lg bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+        <button class="w-full mt-6 px-4 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition cursor-pointer">
+          + Test Add Player
+        </button>
+        </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { create as createPlayer, getAll } from '@/api/player';
 
 const players = ref([]);
 
+const playerName = ref('');
+const playerNameRef = useTemplateRef('playerNameRef');
 const onAddPlayer = () => {
+  if (!playerName.value.trim()) return;
+
   const params = {
-    name: 'Ivana',
+    name: playerName.value,
     socketId: Math.random().toString(36).substring(2, 15)
   }
   createPlayer(params).then(data => {
-    console.log('Added player:', data);
+    playerName.value = '';
+    playerNameRef.value.focus();
+    players.value.push(data);
   }).catch(error => {
     console.error(error);
   });
