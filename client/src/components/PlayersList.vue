@@ -21,7 +21,7 @@
           <div class="flex-1">
             <p class="font-medium text-sm">{{ player.name }}</p>
             <p class="text-xs text-slate-400">
-              {{ player.voted ? 'Voted' : 'Waiting to vote...' }}
+              {{ player.voted ? 'Voted' : 'Waiting to vote...' }} id: {{ player.id }}
             </p>
           </div>
           <div v-if="player.voted" class="w-6 h-6 bg-green-500/20 border border-green-500 rounded-full flex items-center justify-center">
@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref, useTemplateRef } from 'vue';
-import { create as createPlayer, getAll } from '@/api/player';
+import { getAll } from '@/api/player';
 import useAuthStore from '@/stores/auth';
 
 const store = useAuthStore();
@@ -43,37 +43,34 @@ const store = useAuthStore();
 const players = ref([]);
 const playerName = ref('');
 const playerNameRef = useTemplateRef('playerNameRef');
-const onAddPlayer = () => {
+const onAddPlayer = async () => {
   if (!playerName.value.trim()) return;
 
-  const params = {
-    name: playerName.value,
-    socketId: Math.random().toString(36).substring(2, 15),
-  }
-  createPlayer(params).then(data => {
-    playerName.value = '';
-    playerNameRef.value.focus();
-    players.value.push(data);
-  }).catch(error => {
-    console.error(error);
-  });
+  await store.createPlayer(playerName.value.trim());
+  playerName.value = '';
+  playerNameRef.value.focus();
+  loadPlayers();
 };
 
-const loadPlayers = () => {
-  const currentPlayerName = store.displayName;
-  console.log(currentPlayerName)
-  players.value.push({
-    name: currentPlayerName,
-    voted: false, // TODO: replace with vote status
-    isCurrent: true
+const processPlayers = data => {
+  return data.map(player => {
+    return {
+      ...player,
+      isCurrent: player.id === store.id
+    }
   });
+}
+
+function loadPlayers () {
   getAll().then(data => {
-    players.value = data;
-    console.log(players.value)
+    const processed = processPlayers(data);
+    console.log(processed);
+    players.value = processed;
   }).catch(error => {
     console.error(error);
   });
 }
+
 
 loadPlayers();
 </script>

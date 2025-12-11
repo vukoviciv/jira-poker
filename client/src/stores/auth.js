@@ -1,31 +1,34 @@
 import { defineStore } from 'pinia';
-import { create as createPlayer } from '@/api/player';
-import { create } from '../api/player';
+import { create } from '@/api/player';
 
 const useAuthStore = defineStore('auth', {
   state: () => ({
     displayName: localStorage.getItem('displayName') || null,
+    id: localStorage.getItem('id') || null,
   }),
   actions: {
-    setDisplayName(name) {
-      const trimmed = name?.trim() || 'Anonymous';
-      this.displayName = trimmed;
-      localStorage.setItem('displayName', trimmed);
+    setUser({ id, name }) {
+      this.displayName = name;
+      this.id = id;
+      localStorage.setItem('displayName', name);
+      localStorage.setItem('id', id);
+    },
+    login(name) {
+      // TODO: use socket id
+      const id = Math.random().toString(36).substring(2, 15);
+      this.createPlayer(name, id);
+      this.setUser({ id, name });
     },
     logout() {
       localStorage.removeItem('displayName');
+      localStorage.removeItem('id', id);
       this.displayName = null;
+      this.id = null;
     },
-    createPlayer(name, id = null) {
+    async createPlayer(name, id = null) {
       if(!id) id = Math.random().toString(36).substring(2, 15);
-      const params = {
-        name,
-        socketId: id, //TODO change,
-        isCurrent: true
-      }
-      createPlayer(params).then(() => {
-        this.setDisplayName(name); // TODO: save player data
-      }).catch((error) => {
+      const params = { name, id };
+      await create(params).then(data => data).catch(error => {
         console.error('Error creating player:', error);
       });
     }

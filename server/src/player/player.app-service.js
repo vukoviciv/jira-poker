@@ -7,8 +7,8 @@ export class PlayerService {
     this.#repository = repository;
   }
 
-  createPlayer(id, name, isCurrent = false) {
-    const player = new PlayerEntity(id, name, isCurrent);
+  createPlayer(id, name) {
+    const player = new PlayerEntity(id, name);
     return this.#repository.addPlayer(player);
   }
 
