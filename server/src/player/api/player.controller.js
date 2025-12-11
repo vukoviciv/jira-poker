@@ -29,8 +29,8 @@ export class PlayerController {
 
   createPlayer = async ({ body }, res) => {
     try {
-      const { name, socketId } = body;
-      const newPlayer = this.#playerService.createPlayer(socketId, name);
+      const { name, socketId, isCurrent } = body;
+      const newPlayer = this.#playerService.createPlayer(socketId, name, isCurrent);
       
       return res.status(201).json({ data: newPlayer });
     } catch (error) {

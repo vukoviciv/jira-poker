@@ -5,6 +5,5 @@
 </template>
 
 <script setup>
-import MainDesk from '../components/MainDesk.vue';
-// Add room-specific logic here
+import MainDesk from '@/components/MainDesk.vue';
 </script>

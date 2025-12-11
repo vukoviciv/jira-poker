@@ -25,9 +25,9 @@ const store = useAuthStore();
 
 const editName = ref('');
 const save = () => {
-  const value = (editName.value || '').trim();
-  if (!value) return;
-  store.setDisplayName(value);
+  const name = (editName.value || '').trim();
+  if (!name) return;
+  store.createPlayer(name);
   editName.value = '';
 };
 </script>
