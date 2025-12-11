@@ -6,7 +6,12 @@
           <span class="text-lg">♠️</span>
         </div>
         <div class="flex items-center">
-          <h1 class="text-2xl font-bold">Poker Planning</h1>
+          <router-link
+            :to="{ name: 'Home' }"
+            title="Home"
+            class="text-white hover:text-cyan-400 font-semibold">
+            <h1 class="text-2xl font-bold">Poker Planning</h1>
+          </router-link>
           <div v-if="displayName" class="gap-2 ml-2 px-4 py-2 bg-slate-700 rounded-lg text-cyan-400">
             <span class="text-sm">{{ displayName }}</span>
           </div>
