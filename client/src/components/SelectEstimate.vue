@@ -34,14 +34,18 @@
 
 <script setup>
 import { ref } from 'vue';
+import { io } from 'socket.io-client';
+
+const apiUrl = import.meta.env.VITE_API_URL;
+const socket = io(apiUrl);
 
 const selectedCard = ref(null);
 const cards = [1, 2, 3, 5, 7, 13, 15, 23];
 
 const handleCardSelect = (card) => {
   selectedCard.value = card;
-  console.log('Voted:', card);
-  // Emit 
+  console.log('Selected card:', card);
+  socket.emit('voted', { card });
 };
 
 const handleRevealVotes = () => {
