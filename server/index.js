@@ -2,6 +2,7 @@ import { createApp } from './app.js';
 import { GameContext } from './src/container.js';
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
+import playerModule from './src/player/index.js';
 
 // TODO: Import from env
 const port = 3000;
@@ -11,18 +12,15 @@ const corsOptions = {
 };
 
 const gameContext = new GameContext();
+console.log({playerModule})
+gameContext.loadModule('player', playerModule);
+console.log(gameContext.modules['player']);
 
 const app = createApp(gameContext);
 const server = createServer(app);
 const io = new Server(server, { cors: corsOptions });
 
-// Socket.IO connection handler
-io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
-  socket.on('voted', data => {
-    console.log('User voted data:', data);
-  });
-});
+await gameContext.initializeModulesWithIo(io);
 
 server.listen(port, () => onListening());
 

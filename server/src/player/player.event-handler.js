@@ -5,6 +5,14 @@ export class PlayerEventHandler {
     this.#playerService = service;
   }
 
+  handlePlayerVote = (socket, io, data) => {
+    // TODO Service
+    io.emit('playerVoted', {
+      playerId: socket.id,
+      card: data.card
+    });
+  }
+
   handlePlayerJoin = (socket, io, data) => {
     const player = this.#playerService.createPlayer(socket.id, data.name);
     io.emit('playersUpdated', {

@@ -11,7 +11,6 @@ export default function createPlayerRouter(ctx) {
   router.get('/', ctrl.getAll);
   router.get('/:id', ctrl.getPlayer);
   router.post('/', ctrl.createPlayer);
-  // TODO: update, vote
 
   return router;
 }
