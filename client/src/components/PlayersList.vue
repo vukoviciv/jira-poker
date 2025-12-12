@@ -37,11 +37,9 @@
 import { ref, useTemplateRef, onMounted } from 'vue';
 import { getAll } from '@/api/player';
 import useAuthStore from '@/stores/auth';
-import { io } from 'socket.io-client';
+import { useSocket } from '@/composables/useSocket.js';
 
 const store = useAuthStore();
-const socket = io('http://localhost:3000');
-
 const players = ref([]);
 const playerName = ref('');
 const playerNameRef = useTemplateRef('playerNameRef');
@@ -77,18 +75,22 @@ function loadPlayers () {
 loadPlayers();
 
 // Listen for new players joining via Socket.IO
+const { getSocket } = useSocket();
 onMounted(() => {
-  socket.on('playerJoined', (newPlayer) => {
-    console.log('Player joined:', newPlayer);
-    // Check if player already exists
-    const exists = players.value.find(p => p.id === newPlayer.id);
-    if (!exists) {
-      const processedPlayer = {
-        ...newPlayer,
-        isCurrent: newPlayer.id === store.id
-      };
-      players.value.push(processedPlayer);
-    }
-  });
+  const socket = getSocket();
+  if (socket) {
+    socket.on('playerJoined', (newPlayer) => {
+      console.log('Player joined:', newPlayer);
+      // Check if player already exists
+      const exists = players.value.find(p => p.id === newPlayer.id);
+      if (!exists) {
+        const processedPlayer = {
+          ...newPlayer,
+          isCurrent: newPlayer.id === store.id
+        };
+        players.value.push(processedPlayer);
+      }
+    });
+  }
 });
 </script>
