@@ -13,7 +13,7 @@ export function createApp(gameContext) {
   app.use(cors(corsOptions));
   app.use(express.json());
 
-  app.use('/api/player', playerRouter(gameContext.playerRepository));
+  app.use('/api/player', playerRouter(gameContext));
   app.use('/api/test', (_req, res) => res.json({ message: 'test route' }));
   app.get('/api/healthcheck', (_req, res) => {
     res.status(200).json({ status: 'healthy' });

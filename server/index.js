@@ -10,13 +10,22 @@ const corsOptions = {
   credentials: true 
 };
 
-const gameContext = new GameContext();
-const app = createApp(gameContext);
-const server = http.createServer(app);
-// Move out to config/socket.io.js later
-const io = new Server(server, { 
+const io = new Server(http.createServer(), { 
   cors: corsOptions,
   transports: ['websocket', 'polling']
+});
+
+const gameContext = new GameContext(io);
+const app = createApp(gameContext);
+const server = http.createServer(app);
+io.attach(server);
+
+// Socket.IO connection handler
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
 });
 
 server.listen(port, () => onListening());

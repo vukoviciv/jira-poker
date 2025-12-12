@@ -1,8 +1,12 @@
+import express from 'express';
+
 export class PlayerController {
   #playerService;
+  #io;
 
-  constructor(service) {
+  constructor(service, ctx) {
     this.#playerService = service;
+    this.#io = ctx.io;
   }
 
   getAll = async (_req, res) => {
@@ -32,6 +36,10 @@ export class PlayerController {
       const { name, id } = body;
       const newPlayer = this.#playerService.createPlayer(id, name);
       
+      if (this.#io) {
+        this.#io.emit('playerJoined', newPlayer);
+      }
+      
       return res.status(201).json({ data: newPlayer });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -39,5 +47,4 @@ export class PlayerController {
   }
 }
 
-// TODO: create simple DI container
 export default PlayerController;

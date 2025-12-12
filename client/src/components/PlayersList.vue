@@ -34,11 +34,13 @@
 </template>
 
 <script setup>
-import { ref, useTemplateRef } from 'vue';
+import { ref, useTemplateRef, onMounted } from 'vue';
 import { getAll } from '@/api/player';
 import useAuthStore from '@/stores/auth';
+import { io } from 'socket.io-client';
 
 const store = useAuthStore();
+const socket = io('http://localhost:3000');
 
 const players = ref([]);
 const playerName = ref('');
@@ -73,4 +75,20 @@ function loadPlayers () {
 
 
 loadPlayers();
+
+// Listen for new players joining via Socket.IO
+onMounted(() => {
+  socket.on('playerJoined', (newPlayer) => {
+    console.log('Player joined:', newPlayer);
+    // Check if player already exists
+    const exists = players.value.find(p => p.id === newPlayer.id);
+    if (!exists) {
+      const processedPlayer = {
+        ...newPlayer,
+        isCurrent: newPlayer.id === store.id
+      };
+      players.value.push(processedPlayer);
+    }
+  });
+});
 </script>

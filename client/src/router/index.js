@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { storeToRefs } from 'pinia';
 import useAuthStore from '@/stores/auth';
 import WelcomePage from '@/pages/welcome-page.vue';
 import RoomPage from '@/pages/room-page.vue';

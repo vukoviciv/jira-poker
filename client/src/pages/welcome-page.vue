@@ -24,10 +24,10 @@ import useAuthStore from '@/stores/auth';
 const store = useAuthStore();
 
 const editName = ref('');
-const save = () => {
+const save = async () => {
   const name = (editName.value || '').trim();
   if (!name) return;
-  store.createPlayer(name);
+  await store.login(name);
   editName.value = '';
 };
 </script>
