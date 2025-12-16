@@ -13,10 +13,8 @@ const useAuthStore = defineStore('auth', {
       localStorage.setItem('displayName', name);
       localStorage.setItem('id', id);
     },
-    async login(name) {
-      const id = Math.random().toString(36).substring(2, 15);
-      const createdPlayer = await this.createPlayer(name, id);
-      console.log('Created player:', createdPlayer);
+    async login(userName) {
+      const { id, name } = await this.createPlayer(userName);
       this.setPlayer({ id, name });
     },
     logout() {
@@ -25,9 +23,9 @@ const useAuthStore = defineStore('auth', {
       this.displayName = null;
       this.id = null;
     },
-    createPlayer(name, id = null) {
-      if (!id) id = Math.random().toString(36).substring(2, 15);
-      const params = { name, id };
+    createPlayer(name) {
+      const params = { name };
+      console.log('Creating player with params:', params);
       return create(params)
         .catch(error => {
           console.error('Error creating player:', error);

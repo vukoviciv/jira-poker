@@ -16,8 +16,8 @@ export class PlayerController {
 
   createPlayer = async ({ body }, res) => {
     try {
-      const { name, id } = body;
-      const newPlayer = this.#playerService.createPlayer(id, name);
+      const { name } = body;
+      const newPlayer = this.#playerService.createPlayer(name);
       return res.status(201).json({ data: newPlayer });
     } catch (error) {
       res.status(500).json({ error: error.message });

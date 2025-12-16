@@ -6,7 +6,6 @@ export class PlayerRepository {
 
   addPlayer(player) {
     this.players.set(player.id, player);
-    console.log(this.players.values());
     return this.getPlayer(player.id);
   }
 
