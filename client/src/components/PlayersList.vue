@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, useTemplateRef, onMounted } from 'vue';
+import { ref, useTemplateRef, onMounted, onUnmounted } from 'vue';
 import { getAll } from '@/api/player';
 import useAuthStore from '@/stores/auth';
 import { useSocket } from '@/composables/useSocket.js';
@@ -43,9 +43,9 @@ const store = useAuthStore();
 const players = ref([]);
 const playerName = ref('');
 const playerNameRef = useTemplateRef('playerNameRef');
+
 const onAddPlayer = async () => {
   if (!playerName.value.trim()) return;
-
   await store.createPlayer(playerName.value.trim());
   playerName.value = '';
   playerNameRef.value.focus();
@@ -75,22 +75,29 @@ function loadPlayers () {
 loadPlayers();
 
 // Listen for new players joining via Socket.IO
-const { getSocket } = useSocket();
-onMounted(() => {
-  const socket = getSocket();
-  if (socket) {
-    socket.on('playerJoined', (newPlayer) => {
-      console.log('Player joined:', newPlayer);
-      // Check if player already exists
-      const exists = players.value.find(p => p.id === newPlayer.id);
-      if (!exists) {
-        const processedPlayer = {
-          ...newPlayer,
-          isCurrent: newPlayer.id === store.id
-        };
-        players.value.push(processedPlayer);
-      }
-    });
+const { on, off } = useSocket();
+const handlePlayersUpdated = (payload) => {
+  console.log('Players update received:', payload);
+  const list = Array.isArray(payload) ? payload : payload?.players || [];
+  const processed = processPlayers(list);
+  players.value = processed;
+};
+
+const handlePlayerJoined = (player) => {
+  console.log('Player joined event:', player);
+  const exists = players.value.find(p => p.id === player.id);
+  if (!exists) {
+    players.value.push({ ...player, isCurrent: player.id === store.id });
   }
+};
+
+onMounted(() => {
+  on('playerJoined', handlePlayerJoined);
+  on('playersUpdated', handlePlayersUpdated);
+});
+
+onUnmounted(() => {
+  off('playersUpdated', handlePlayersUpdated);
+  off('playerJoined', handlePlayerJoined);
 });
 </script>

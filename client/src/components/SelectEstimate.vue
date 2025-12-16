@@ -44,7 +44,11 @@ const handleCardSelect = (card) => {
   selectedCard.value = card;
   console.log('Selected card:', card);
   const socket = getSocket();
-  if (socket) socket.emit('playerVoted', { card });
+  if (socket) {
+    socket.emit('voted', { card });
+  } else {
+    console.warn('Socket not connected; unable to send vote. Ensure the Room page has initialized the socket connection.');
+  }
 };
 
 const handleRevealVotes = () => {

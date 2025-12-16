@@ -1,31 +1,31 @@
 export class GameContext {
   constructor() {
-    this.modules = new Map();
+    this.loadedModules = new Map();
     this.services = new Map();
     this.moduleDefinitions = new Map();
   }
 
   loadModule(name, moduleDefinition) {
-    const result = moduleDefinition.load(this);
-    this.modules.set(name, result);
+    const moduleExports = moduleDefinition.load(this);
+    this.loadedModules.set(name, moduleExports);
     this.moduleDefinitions.set(name, moduleDefinition);
 
-    return result;
+    return moduleExports;
   }
 
   async initializeModulesWithIo(io) {
     for (const [name, moduleDefinition] of this.moduleDefinitions) {
-      const moduleData = this.modules.get(name);
+      const moduleData = this.loadedModules.get(name);
       if (moduleDefinition?.afterStart) {
         await moduleDefinition.afterStart(moduleData, io);
       } else {
-        console.log(`No afterStart method for ${name}`);
+        throw new Error(`Module ${name} is missing afterStart method`);
       }
     }
   }
 
   getModule(name) {
-    return this.modules.get(name);
+    return this.loadedModules.get(name);
   }
 
   registerService(key, service) {

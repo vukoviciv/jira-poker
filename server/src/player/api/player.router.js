@@ -1,6 +1,6 @@
 import express from 'express';
 import PlayerController from './player.controller.js';
-import { PlayerService } from '../player.app-service.js';
+import { PlayerService } from '../app-services/player.app-service.js';
 
 export default function createPlayerRouter(ctx) {
   const { playerRepository } = ctx;
@@ -9,7 +9,6 @@ export default function createPlayerRouter(ctx) {
   const ctrl = new PlayerController(service, ctx);
 
   router.get('/', ctrl.getAll);
-  router.get('/:id', ctrl.getPlayer);
   router.post('/', ctrl.createPlayer);
 
   return router;
