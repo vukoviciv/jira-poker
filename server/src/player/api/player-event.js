@@ -5,8 +5,6 @@ export function registerPlayerEvents(io, playerService) {
 
   // Socket -> Service: handle incoming socket events and call service
   io.on('connection', (socket) => {
-    console.log('New client connected:', socket.id);
-
     socket.on('playerJoin', (data) => {
       handler.handlePlayerJoin(socket, data);
     });

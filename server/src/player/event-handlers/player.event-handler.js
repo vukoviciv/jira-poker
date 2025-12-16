@@ -6,7 +6,6 @@ export class PlayerEventHandler {
   }
 
   handlePlayerJoin = (socket, data) => {
-    // Create a player associated with this socket id
     this.#playerService.createPlayer(socket.id, data?.name || `Player-${socket.id}`);
   };
 

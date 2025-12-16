@@ -64,13 +64,11 @@ const processPlayers = data => {
 function loadPlayers () {
   getAll().then(data => {
     const processed = processPlayers(data);
-    console.log(processed);
     players.value = processed;
   }).catch(error => {
     console.error(error);
   });
 }
-
 
 loadPlayers();
 
@@ -84,7 +82,6 @@ const handlePlayersUpdated = (payload) => {
 };
 
 const handlePlayerJoined = (player) => {
-  console.log('Player joined event:', player);
   const exists = players.value.find(p => p.id === player.id);
   if (!exists) {
     players.value.push({ ...player, isCurrent: player.id === store.id });
@@ -93,6 +90,7 @@ const handlePlayerJoined = (player) => {
 
 onMounted(() => {
   on('playerJoined', handlePlayerJoined);
+  console.log('Registering playersUpdated listener');
   on('playersUpdated', handlePlayersUpdated);
 });
 

@@ -2,6 +2,8 @@ import { io } from 'socket.io-client';
 import { ref } from 'vue';
 
 let socketInstance = null;
+const handlers = new Map();
+
 const EVENT = {
   CONNECT: 'connect',
   DISCONNECT: 'disconnect',
@@ -10,7 +12,6 @@ const EVENT = {
 
 export function useSocket() {
   const isConnected = ref(false);
-  const handlers = new Map();
 
   const on = (event, handler) => {
     if (!handlers.has(event)) handlers.set(event, new Set());
@@ -31,7 +32,6 @@ export function useSocket() {
     socketInstance = io(apiUrl);
 
     socketInstance.on(EVENT.CONNECT, () => {
-      console.log('Socket connected:', socketInstance.id);
       isConnected.value = true;
       // attach any registered handlers
       for (const [event, set] of handlers.entries()) {
