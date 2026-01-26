@@ -1,0 +1,10 @@
+{
+  "name": "jira-poker",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:start": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
