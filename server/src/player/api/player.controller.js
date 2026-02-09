@@ -1,13 +1,13 @@
 export class PlayerController {
   #playerService;
 
-  constructor(service, ctx = null) {
+  constructor(service) {
     this.#playerService = service;
   }
 
   getAll = async (_req, res) => {
     try {
-      const players = this.#playerService.getAllPlayers();
+      const players = await this.#playerService.getAllPlayers();
       return res.json({ data: players });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -17,7 +17,7 @@ export class PlayerController {
   createPlayer = async ({ body }, res) => {
     try {
       const { name } = body;
-      const newPlayer = this.#playerService.createPlayer(name);
+      const newPlayer = await this.#playerService.createPlayer(name);
       return res.status(201).json({ data: newPlayer });
     } catch (error) {
       res.status(500).json({ error: error.message });

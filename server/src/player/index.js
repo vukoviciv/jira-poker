@@ -4,7 +4,7 @@ import express from 'express';
 
 export default {
   load(context) {
-    const { repository, service, controller } = PlayerFactory.createContainer(context);
+    const { repository, service, controller } = PlayerFactory.createContainer();
 
     const router = express.Router();
     router.get('/', controller.getAll);

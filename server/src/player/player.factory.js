@@ -3,10 +3,10 @@ import { PlayerRepository } from './infrastructure/player.repository.js';
 import { PlayerController } from './api/player.controller.js';
 
 export class PlayerFactory {
-  static createContainer(ctx = null) {
+  static createContainer() {
     const repository = new PlayerRepository();
     const service = new PlayerService(repository);
-    const controller = new PlayerController(service, ctx);
+    const controller = new PlayerController(service);
 
     return { repository, service, controller };
   }
