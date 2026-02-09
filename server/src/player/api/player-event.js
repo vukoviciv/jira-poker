@@ -5,11 +5,11 @@ export function registerPlayerEvents(io, playerService) {
 
   // Socket -> Service: handle incoming socket events and call service
   io.on('connection', (socket) => {
-    socket.on('playerJoin', (data) => {
+    socket.on('player:join', (data) => {
       handler.handlePlayerJoin(socket, data);
     });
 
-    socket.on('voted', (data) => {
+    socket.on('player:vote', (data) => {
       handler.handlePlayerVote(socket, data);
     });
 
@@ -20,20 +20,20 @@ export function registerPlayerEvents(io, playerService) {
 
   // Service -> Socket: forward domain events to all connected clients
   if (typeof playerService.on === 'function') {
-    playerService.on('player.created', (player) => {
-      io.emit('playerJoined', player);
+    playerService.on('player.joined', (player) => {
+      io.emit('player:joined', player);
     });
 
     playerService.on('player.voted', (payload) => {
-      io.emit('playerVoted', payload);
+      io.emit('player:voted', payload);
     });
 
     playerService.on('player.removed', (player) => {
-      io.emit('playersUpdated', { players: playerService.getAllPlayers(), message: `${player?.name || 'A player'} left` });
+      io.emit('player:removed', { players: playerService.getAllPlayers(), message: `${player?.name || 'A player'} left` });
     });
 
     playerService.on('players.updated', (players) => {
-      io.emit('playersUpdated', { players });
+      io.emit('players:updated', { players });
     });
   }
 }

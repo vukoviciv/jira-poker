@@ -13,7 +13,7 @@ export class PlayerService extends EventEmitter {
     const id = Math.random().toString(36).substring(2, 15);
     const player = new PlayerEntity(id, name);
     const saved = this.#repository.addPlayer(player);
-    this.emit('player.created', saved);
+    this.emit('player.joined', saved);
     this.emit('players.updated', this.getAllPlayers());
     return saved;
   }

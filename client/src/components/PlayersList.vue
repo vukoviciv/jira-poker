@@ -76,12 +76,12 @@ const handlePlayerJoined = (player) => {
 };
 
 onMounted(() => {
-  on('playerJoined', handlePlayerJoined);
-  on('playersUpdated', handlePlayersUpdated);
+  on('player:joined', handlePlayerJoined);
+  on('players:updated', handlePlayersUpdated);
 });
 
 onUnmounted(() => {
-  off('playersUpdated', handlePlayersUpdated);
-  off('playerJoined', handlePlayerJoined);
+  off('players:updated', handlePlayersUpdated);
+  off('player:joined', handlePlayerJoined);
 });
 </script>
