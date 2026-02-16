@@ -10,6 +10,7 @@ export default function createPlayerRouter(ctx) {
 
   router.get('/', ctrl.getAll);
   router.post('/', ctrl.createPlayer);
+  router.delete('/:id', ctrl.removePlayer);
 
   return router;
 }

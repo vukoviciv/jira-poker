@@ -75,13 +75,22 @@ const handlePlayerJoined = (player) => {
   }
 };
 
+const handlePlayerLeft = (payload) => {
+  const { players: updatedPlayers, message: leaveMessage } = payload;
+  players.value = processPlayers(updatedPlayers);
+  message.value = leaveMessage || 'A player has left.';
+  show();
+};
+
 onMounted(() => {
   on('player:joined', handlePlayerJoined);
+  on('player:removed', handlePlayerLeft);
   on('players:updated', handlePlayersUpdated);
 });
 
 onUnmounted(() => {
   off('players:updated', handlePlayersUpdated);
   off('player:joined', handlePlayerJoined);
+  off('player:removed', handlePlayerLeft);
 });
 </script>

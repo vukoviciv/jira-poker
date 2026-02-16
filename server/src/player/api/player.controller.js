@@ -23,6 +23,16 @@ export class PlayerController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  removePlayer = async({params}, res) => {
+    try {
+      const { id } = params;
+      const removedPlayer = await this.#playerService.removePlayer(id);
+      return res.json({ data: removedPlayer });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 export default PlayerController;

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { create } from '@/api/player';
+import { create, remove } from '@/api/player';
 
 const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -18,6 +18,7 @@ const useAuthStore = defineStore('auth', {
       this.setPlayer({ id, name });
     },
     logout() {
+      this.removePlayer(this.id);
       localStorage.removeItem('displayName');
       localStorage.removeItem('id');
       this.displayName = null;
@@ -29,6 +30,13 @@ const useAuthStore = defineStore('auth', {
       return create(params)
         .catch(error => {
           console.error('Error creating player:', error);
+          throw error;
+        });
+    },
+    removePlayer(id) {
+      return remove(id)
+        .catch(error => {
+          console.error('Error removing player:', error);
           throw error;
         });
     }

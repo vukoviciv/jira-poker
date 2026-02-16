@@ -9,6 +9,7 @@ export default {
     const router = express.Router();
     router.get('/', controller.getAll);
     router.post('/', controller.createPlayer);
+    router.delete('/:id', controller.removePlayer);
 
     context.registerService('playerService', service);
     context.registerService('playerRepository', repository);
@@ -17,6 +18,7 @@ export default {
   },
 
   afterStart(moduleData, io) {
+    console.log('Registering player events with io: ', io);
     const { service } = moduleData;
     registerPlayerEvents(io, service);
   }

@@ -28,9 +28,11 @@ export class PlayerService extends EventEmitter {
 
   removePlayer(id) {
     const player = this.getPlayer(id);
+    if (!player) return;
     this.#repository.removePlayer(id);
     this.emit('player.removed', player);
     this.emit('players.updated', this.getAllPlayers());
+    return player;
   }
 
   submitVote(id, vote) {

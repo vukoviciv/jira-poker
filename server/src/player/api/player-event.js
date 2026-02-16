@@ -29,9 +29,16 @@ export function registerPlayerEvents(io, playerService) {
     });
 
     playerService.on('player.removed', (player) => {
-      io.emit('player:removed', { players: playerService.getAllPlayers(), message: `${player?.name || 'A player'} left` });
+      console.log('player service on player.removed: ', player);
+      const payload = {
+        players: playerService.getAllPlayers(),
+        message: `${player?.name || 'A player'} left`
+      }
+      io.emit('player:removed', payload);
+      console.log('player:removed event emitted with payload: ', payload);
     });
 
+    // TODO: is this event needed if we differ between player:removed and player:joined on the client?
     playerService.on('players.updated', (players) => {
       io.emit('players:updated', { players });
     });
