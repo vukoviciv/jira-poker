@@ -21,7 +21,8 @@ export function registerPlayerEvents(io, playerService) {
   // Service -> Socket: forward domain events to all connected clients
   if (typeof playerService.on === 'function') {
     playerService.on('player.joined', (player) => {
-      io.emit('player:joined', player);
+      io.emit('player:joined', { player });
+      io.emit('players:updated', { players: playerService.getAllPlayers() });
     });
 
     playerService.on('player.voted', (payload) => {
@@ -29,18 +30,9 @@ export function registerPlayerEvents(io, playerService) {
     });
 
     playerService.on('player.removed', (player) => {
-      console.log('player service on player.removed: ', player);
-      const payload = {
-        players: playerService.getAllPlayers(),
-        message: `${player?.name || 'A player'} left`
-      }
+      const payload = { message: `${player?.name || 'A player'} left` };
       io.emit('player:removed', payload);
-      console.log('player:removed event emitted with payload: ', payload);
-    });
-
-    // TODO: is this event needed if we differ between player:removed and player:joined on the client?
-    playerService.on('players.updated', (players) => {
-      io.emit('players:updated', { players });
+      io.emit('players:updated', { players: playerService.getAllPlayers() });
     });
   }
 }

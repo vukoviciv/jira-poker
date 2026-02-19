@@ -14,7 +14,6 @@ export class PlayerService extends EventEmitter {
     const player = new PlayerEntity(id, name);
     const saved = this.#repository.addPlayer(player);
     this.emit('player.joined', saved);
-    this.emit('players.updated', this.getAllPlayers());
     return saved;
   }
 
@@ -31,19 +30,16 @@ export class PlayerService extends EventEmitter {
     if (!player) return;
     this.#repository.removePlayer(id);
     this.emit('player.removed', player);
-    this.emit('players.updated', this.getAllPlayers());
     return player;
   }
 
   submitVote(id, vote) {
     this.#repository.updatePlayerVote(id, vote);
     this.emit('player.voted', { playerId: id, card: vote });
-    this.emit('players.updated', this.getAllPlayers());
   }
 
   resetVotes() {
     this.#repository.resetVotes();
     this.emit('votes.reset');
-    this.emit('players.updated', this.getAllPlayers());
   }
 }

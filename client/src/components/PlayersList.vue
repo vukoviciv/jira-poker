@@ -66,7 +66,7 @@ const handlePlayersUpdated = (payload) => {
   players.value = processed;
 };
 
-const handlePlayerJoined = (player) => {
+const handlePlayerJoined = ({ player }) => {
   const exists = players.value.find(p => p.id === player.id);
   if (!exists) {
     players.value.push({ ...player, isCurrent: player.id === store.id });
@@ -78,7 +78,7 @@ const handlePlayerJoined = (player) => {
 const handlePlayerLeft = (payload) => {
   const { players: updatedPlayers, message: leaveMessage } = payload;
   players.value = processPlayers(updatedPlayers);
-  message.value = leaveMessage || 'A player has left.';
+  message.value = leaveMessage;
   show();
 };
 
