@@ -75,9 +75,7 @@ const handlePlayerJoined = ({ player }) => {
 };
 
 const handlePlayerLeft = (payload) => {
-  const { players: updatedPlayers, message: leaveMessage } = payload;
-  players.value = processPlayers(updatedPlayers);
-  message.value = leaveMessage;
+  message.value = payload.message;
   show();
 };
 
