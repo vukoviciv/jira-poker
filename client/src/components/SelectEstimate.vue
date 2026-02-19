@@ -42,7 +42,6 @@ const { getSocket } = useSocket();
 
 const handleCardSelect = (card) => {
   selectedCard.value = card;
-  console.log('Selected card:', card);
   const socket = getSocket();
   if (socket) {
     socket.emit('player:vote', { card });
@@ -52,7 +51,6 @@ const handleCardSelect = (card) => {
 };
 
 const handleRevealVotes = () => {
-  console.log('Revealing votes...');
   // Emit
 };
 </script>

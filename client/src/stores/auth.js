@@ -26,7 +26,6 @@ const useAuthStore = defineStore('auth', {
     },
     createPlayer(name) {
       const params = { name };
-      console.log('Creating player with params:', params);
       return create(params)
         .catch(error => {
           console.error('Error creating player:', error);

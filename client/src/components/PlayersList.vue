@@ -60,7 +60,6 @@ const { show } = useSnackbar();
 const message = ref('');
 
 const handlePlayersUpdated = (payload) => {
-  console.log('Players update received:', payload);
   const list = Array.isArray(payload) ? payload : payload?.players || [];
   const processed = processPlayers(list);
   players.value = processed;

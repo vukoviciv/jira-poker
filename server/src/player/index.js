@@ -18,7 +18,6 @@ export default {
   },
 
   afterStart(moduleData, io) {
-    console.log('Registering player events with io: ', io);
     const { service } = moduleData;
     registerPlayerEvents(io, service);
   }
